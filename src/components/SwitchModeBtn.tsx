@@ -2,6 +2,8 @@ import * as React from "react";
 import { useAppDispatch, useAppSelector } from "../redux/redux";
 import { setIsGameStart, setMode } from "../redux/slices/gameSlice";
 
+import { buttonClickSound } from "../App";
+
 const SwitchModeBtn = () => {
   const mode = useAppSelector((state) => state.game.isPlayerrFirst);
   const isGameStart = useAppSelector((state) => state.game.isGameStart);
@@ -15,7 +17,7 @@ const SwitchModeBtn = () => {
             {mode ? "Player first" : "Ai first"}
           </div>
           <div
-            onClick={() => dispatch(setMode())}
+            onClick={() => {dispatch(setMode()); buttonClickSound.play()}}
             className={`BtnContainer ${mode ? "jscLeft" : "jscRight"} ${isGameStart && 'disabledbutton'}`}
           >
             <div className="BtnContainer__circle"></div>
@@ -23,7 +25,7 @@ const SwitchModeBtn = () => {
         </div>
         <div className="startButtonContainer">
           <div
-            onClick={() => dispatch(setIsGameStart())}
+            onClick={() => {dispatch(setIsGameStart())}}
             className="startButton"
           >
             {isGameStart ? "Restart" : "Start"}

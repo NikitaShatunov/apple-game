@@ -6,7 +6,8 @@
   width: 80vw;
   position: relative;
   height: 70vh;
-  background: linear-gradient( rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1) ), url("https://i.pinimg.com/originals/b4/30/98/b43098976b409643965981a6b873a092.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    url("https://i.pinimg.com/originals/b4/30/98/b43098976b409643965981a6b873a092.jpg");
   filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.75));
 }
 .webCorner {
@@ -23,7 +24,7 @@
   position: absolute;
   height: 600px;
   width: 1000px;
-  background-image: url('https://wallpaperaccess.com/full/1659875.jpg');
+  background-image: url("https://wallpaperaccess.com/full/1659875.jpg");
   border: 4px solid #bb8028;
   border-radius: 16px;
   h2 {
@@ -35,15 +36,15 @@
   }
 }
 .modalWindowClose {
-  transition: .7s;
+  transition: 0.7s;
   top: -700px;
 }
 .modalWindowOpen {
-  transition: .7s;
+  transition: 0.7s;
   top: 0px;
 }
 .spiderCorner {
-  transition: .6s;
+  transition: 0.6s;
   position: absolute;
   width: 100px;
   z-index: 10000;
@@ -53,7 +54,7 @@
 }
 .spiderCornerDown {
   top: 605px;
-  transition: .7s;
+  transition: 0.7s;
 }
 .gameArea {
   margin-top: 100px;
@@ -243,61 +244,116 @@
   display: flex;
   justify-content: center;
   &__buttonLabel {
-  text-align: center;
-  width: 100px;
+    text-align: center;
+    width: 100px;
   }
-.jscLeft {
-  justify-content: start;
-}
-.jscRight {
-  justify-content: end;
-}
-.switchModeLabel {
-  text-align: center;
-  font-size: 18px;
-  font-weight: 800;
-  margin-bottom: 4px;
-}
-.startButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 70px;
-  height: 30px;
-  background-color: white;
-  border-radius: 6px;
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 16px;
-  cursor: pointer;
-  &:hover {
-    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.65));
+  .jscLeft {
+    justify-content: start;
+  }
+  .jscRight {
+    justify-content: end;
+  }
+  .switchModeLabel {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .startButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 30px;
+    background-color: white;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 16px;
+    cursor: pointer;
+    &:hover {
+      filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.65));
       transition: 0.2s;
+    }
+    &:active {
+      background-color: lightgrey;
+    }
   }
-  &:active {
-    background-color: lightgrey;
+  .startButtonContainer {
+    width: 90px;
+    display: flex;
+    justify-content: center;
+    .startButton { 
+      background-color: rgb(101, 172, 122); 
+      color: white;
+      border: 1px solid lightgray;
+      &:active {
+        background-color: gray;
+      }
+    }
+   
+  }
+  .BtnContainer {
+    margin-left: 16px;
+    width: 60px;
+    height: 26px;
+    border-radius: 8px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &__circle {
+      width: 22px;
+      height: 22px;
+      background-color: black;
+      border-radius: 16px;
+      margin: 0 2px;
+    }
   }
 }
-.startButtonContainer {
-  width: 90px;
+.rulesButtonContainer {
+  margin-top: 100px;
+  width: 1000px;
   display: flex;
   justify-content: center;
-}
-.BtnContainer {
-  margin-left: 16px;
-  width: 60px;
-  height: 26px;
-  border-radius: 8px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  &__circle {
-    width: 22px;
-    height: 22px;
-    background-color: black;
-    border-radius: 16px;
-    margin: 0 2px;
+  .buttonSave {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(101, 172, 122);
+    color: white;
+    border: 1px solid lightgrey;
+    cursor: pointer;
+    width: 60px;
+    height: 40px;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 18px;
+    &:hover {
+      filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.75));
+    }
+    &:active {
+      background-color: gray;
+    }
   }
+
 }
+
+.settingsBlock {
+  label {
+    margin-left: 4px;
+  }
+  input {
+    margin-top: 14px;
+    font-size: 16px;
+  }
+  font-size: 18px;
+  text-align: left;
+  margin-left: 14px;
+  .inputNumber {
+    width: 40px;
+    margin-left: 14px;
+    font-size: 16px;
+    border-radius: 4px;
+  }
 }

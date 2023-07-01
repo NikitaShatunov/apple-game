@@ -2,14 +2,24 @@ import * as React from "react";
 import "./App.scss";
 import GamerBasket from "./components/GamerBasket";
 import { useAppDispatch, useAppSelector } from "./redux/redux";
+import itemPick from "./assets/itemPick.mp3"
+import win from "./assets/win.mp3"
+import lose from "./assets/fail.mp3"
+import click from "./assets/click.mp3"
+
+
 import {
   clearGamerState,
   setOpponentPick,
   setPlayerPick,
   setResidue,
 } from "./redux/slices/gameSlice";
-import { bestMove } from "./utils/alphaBetaAi";
+import { bestMove } from "./utils/minimax";
 import SwitchModeBtn from "./components/SwitchModeBtn";
+import ModalWindow from "./components/ModalWindow";
+
+export const buttonClickSound = new Audio(click)
+
 
 function App() {
   const [isWin, setIsWin] = React.useState(false);
@@ -17,85 +27,71 @@ function App() {
   const mode = useAppSelector((state) => state.game.isPlayerrFirst);
   const isGameStart = useAppSelector((state) => state.game.isGameStart);
   const dispatch = useAppDispatch();
-  const [isModalOpen, setIsModalOpen] = React.useState(true);
+  const applesPickMax = useAppSelector((state) => state.game.applesPick)
   const playerPick = useAppSelector((state) => state.game.playerCurrentPick);
   const residue = useAppSelector((state) => state.game.residue);
-  const refModal = React.useRef<HTMLDivElement>(null);
-  const refSpider = React.useRef<HTMLImageElement>(null);
+  const isGameClassic = useAppSelector((state) => state.game.isGameClassic)
+  const ownResidue = useAppSelector((state) => state.game.ownResidue)
   const opponentPick = useAppSelector(
     (state) => state.game.opponentCurrentPick
   );
   const playerAmount = useAppSelector((state) => state.game.playerAmount);
   const opponentAmount = useAppSelector((state) => state.game.opponentAmount);
 
+  const soundOfPick = new Audio(itemPick)
+  const soundWin = new Audio(win)
+  const soundLose = new Audio(lose)
+
+
   React.useEffect(() => {
     if (residue === 0) {
       if (isGameStart) {
-        if (playerAmount % 2 === 0) setIsWin(true);
-        else setIsWin(false);
+        if (playerAmount % 2 === 0) {
+          setIsWin(true);
+          soundWin.play()
+        }
+        else {
+          setIsWin(false);
+          soundLose.play()
+        }
         setIsGameEnded(true);
       }
     }
   }, [residue, isGameEnded, opponentAmount, playerAmount]);
-  React.useEffect(() => {
-    const clickOutside = (event: MouseEvent) => {
-      let path = event.composedPath().includes(refModal.current as Node && refSpider.current as Node);
-      if (!path) {
-        setIsModalOpen(false);
-      }
-    };
-    document.addEventListener("click", clickOutside);
-    return () => {
-      document.removeEventListener("click", clickOutside);
-    };
-  },[isModalOpen])
+  
   React.useEffect(() => {
     if (!mode && isGameStart) {
       if (residue > 1) {
-        const aiMove = bestMove(residue);
+        const aiMove = bestMove(residue, applesPickMax);
         dispatch(setOpponentPick(aiMove));
       }
     }
-  }, [isGameStart, mode]);
+  }, [isGameStart, mode, isGameClassic]);
   const onClickRestart = () => {
-    dispatch(setResidue(25));
+    buttonClickSound.play()
+    if(isGameClassic) {
+      dispatch(setResidue(25));
+    }
+    else {
+      dispatch(setResidue(ownResidue));
+    }
+   
     dispatch(clearGamerState());
     setIsGameEnded(false);
   };
   const onClickApplePick = (n: number) => {
+    soundOfPick.play()
     dispatch(setPlayerPick(n));
     if (residue > 1) {
-      const aiMove = bestMove(residue - n);
+      const aiMove = bestMove(residue - n, applesPickMax);
       dispatch(setOpponentPick(aiMove));
     }
   };
-  const onClickSpider = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+
   React.useEffect(() => {}, [playerPick, opponentPick]);
   return (
     <div className="gameArea">
-      <div ref={refModal}
-        className={`modalWindow ${
-          isModalOpen ? "modalWindowOpen" : "modalWindowClose"
-        }`}
-      >
-        <h2>Rules:</h2>
-        <div className="rules">
-          Two people are playing a game. From the pile of 25 apples, each
-          player takes either 1, 2 or 3 apples on each turn. The game is over
-          once all apples are taken. Whoever has the even amount of apples
-          wins.
-          <br />
-          When you are ready to play, select the game mode and press start. After each pick, you will see the total amount of your apples.
-        </div>
-      </div>
-      <img
-        onClick={() => onClickSpider()} ref={refSpider}
-        className={`spiderCorner ${isModalOpen ? "spiderCornerDown" : ""}`}
-        src="/img/spider.webp"
-        alt="spider"
-      />
+      <ModalWindow />
       {isGameEnded && isWin && (
         <div className="blackBg">
           <div className="gameEnd">
@@ -144,47 +140,11 @@ function App() {
           </div>
 
           <div className="buttonNext">
-            {isGameStart && (
-              <>
-                {" "}
-                {residue >= 3 ? (
-                  <>
-                    {" "}
-                    <div onClick={() => onClickApplePick(1)}>🍎</div>
-                    <div onClick={() => onClickApplePick(2)}>🍎🍎</div>
-                    <div onClick={() => onClickApplePick(3)}>🍎🍎🍎</div>
-                  </>
-                ) : residue >= 2 ? (
-                  <>
-                    {" "}
-                    <div onClick={() => onClickApplePick(1)}>🍎</div>
-                    <div onClick={() => onClickApplePick(2)}>🍎🍎</div>
-                    <div
-                      className="disabledbutton"
-                      onClick={() => onClickApplePick(3)}
-                    >
-                      🍎🍎🍎
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    <div onClick={() => onClickApplePick(1)}>🍎</div>
-                    <div
-                      className="disabledbutton"
-                      onClick={() => onClickApplePick(2)}
-                    >
-                      🍎🍎
-                    </div>
-                    <div
-                      className="disabledbutton"
-                      onClick={() => onClickApplePick(3)}
-                    >
-                      🍎🍎🍎
-                    </div>{" "}
-                  </>
-                )}
-              </>
+            {isGameStart && (<>
+            
+            {new Array(applesPickMax).fill(1).map((_, i) => <div className={`${(residue < i+1) ? 'disabledbutton' : ''}`} onClick={() => onClickApplePick(i+1)}>🍎 {i+1}</div>)}
+            </>
+              
             )}
           </div>
           <div className="opponentArea">
