@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useAppDispatch, useAppSelector } from "../redux/redux";
 import modalSound from "../assets/modal.mp3";
+
 import {
   setApplesPickOwnGame,
   setIsGameClasssic,
@@ -17,7 +18,10 @@ const ModalWindow = () => {
   const [applesPick, setApplePick] = React.useState(0);
   const [isWarning, setIsWarning] = React.useState(false);
   const isGameClassic = useAppSelector((state) => state.game.isGameClassic);
+
   const soundOfModal = new Audio(modalSound);
+
+
   const dispatch = useAppDispatch();
   const onClickSpider = () => {
     soundOfModal.play();
@@ -91,7 +95,7 @@ const ModalWindow = () => {
           apples are taken. Whoever has the even amount of apples wins.
           <br />
           When you are ready to play, select the game mode and press start.
-          After each pick, you will see the total amount of your apples.
+          After each pick, you will see the total number of your apples.
         </div>
         <h2>Settings:</h2>
         <div className="settingsBlock">
@@ -102,7 +106,7 @@ const ModalWindow = () => {
             name="radio"
             id="classic"
           />
-          <label htmlFor="classic">Classic (25 apples, 1 - 3 picks)</label>
+          <label htmlFor="classic">Classic (25 apples, 1 to 3 at a time)</label>
           <br />
           <input
             onChange={() => setGameMode("ownRules")}
@@ -121,7 +125,7 @@ const ModalWindow = () => {
             type="number"
             name="n"
           />
-          <label htmlFor="n">Apples (2*n + 1)</label>
+          <label htmlFor="n">apples (2*n + 1)</label>
           <input
             min={1}
             onChange={(e) => setApplePick(+e.target.value)}

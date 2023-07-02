@@ -125,7 +125,7 @@ function App() {
             <div className="table__container__quantityOfApple">
               {new Array(residue).fill(0).map((_, id) => (
                 <div
-                  id={id + "id"}
+                  id={String(id)}
                   className="table__container__quantityOfApple__apple"
                 >
                   🍎
@@ -142,6 +142,7 @@ function App() {
               <>
                 {new Array(applesPickMax).fill(1).map((_, i) => (
                   <div
+                  id={String(i)}
                     className={`${residue < i + 1 ? "disabledbutton" : ""}`}
                     onClick={() => onClickApplePick(i + 1)}
                   >

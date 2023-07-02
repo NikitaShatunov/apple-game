@@ -10,19 +10,19 @@ const GamerBasket = ({ gamerAmount, gamer }: Props) => {
         gamerAmount > 10 ? (
           <div className="applesInTheBasket">
             {new Array(10).fill(0).map((_, id) => (
-              <div className={`tenApples__${id}`}>🍎</div>
+              <div id={String(id)} className={`tenApples__${id}`}>🍎</div>
             ))}
           </div>
         ) : gamerAmount <= 10 && gamerAmount > 5 ? (
           <div className="applesInTheBasket">
             {new Array(5).fill(0).map((_, id) => (
-              <div className={`fiveApples__${id}`}>🍎</div>
+              <div id={String(id)} className={`fiveApples__${id}`}>🍎</div>
             ))}
           </div>
         ) : gamerAmount <= 5 && gamerAmount > 0 ? (
           <div className="applesInTheBasket">
             {new Array(3).fill(0).map((_, id) => (
-              <div className={`threeApples__${id}`}>🍎</div>
+              <div  id={String(id)} className={`threeApples__${id}`}>🍎</div>
             ))}
           </div>
         ) : null

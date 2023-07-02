@@ -1,7 +1,7 @@
 html,
 body {
   box-sizing: border-box;
-  min-height: 100vh;
+  min-height: 80vh;
 }
 *,
 *::after,
@@ -260,6 +260,12 @@ body {
   &__buttonLabel {
     text-align: center;
     width: 100px;
+  }
+  &__soundBtn {
+    position: absolute;
+    width: 32px;
+    right: 14px;
+    cursor: pointer;
   }
   .jscLeft {
     justify-content: start;
