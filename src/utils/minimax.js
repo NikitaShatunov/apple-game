@@ -1,3 +1,4 @@
+//the function calculates the bestScore using the minimax algorythm and returns it
 export function bestMove(applesLeft, maxApple) {
   let bestScore = -Infinity;
   let bestMove;
@@ -15,7 +16,7 @@ export function bestMove(applesLeft, maxApple) {
   } 
   return bestMove;
 }
-
+//a minimax algorithm is a recursive algorithm for choosing the next move in an n-player game, usually a two-player game.
 function minimax(apples, depth, isMaximizing, maxApple) {
   if (apples === 0) {
     return depth % 2 === 0 ? 0 : 1; 
@@ -30,7 +31,8 @@ function minimax(apples, depth, isMaximizing, maxApple) {
       }
     }
     return bestScore;
-  } else {
+  } 
+  else {
     let bestScore = Infinity;
     for (let i = 1; i <= maxApple; i++) {
       if (apples >= i) {

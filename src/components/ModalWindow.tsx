@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useAppDispatch, useAppSelector } from "../redux/redux";
-import modalSound from "../assets/modal.mp3"
+import modalSound from "../assets/modal.mp3";
 import {
   setApplesPickOwnGame,
   setIsGameClasssic,
@@ -17,19 +17,20 @@ const ModalWindow = () => {
   const [applesPick, setApplePick] = React.useState(0);
   const [isWarning, setIsWarning] = React.useState(false);
   const isGameClassic = useAppSelector((state) => state.game.isGameClassic);
-  const soundOfModal = new Audio(modalSound)
+  const soundOfModal = new Audio(modalSound);
   const dispatch = useAppDispatch();
   const onClickSpider = () => {
-    soundOfModal.play()
+    soundOfModal.play();
     setIsModalOpen(!isModalOpen);
   };
   React.useEffect(() => {}, [gameMode]);
   React.useEffect(() => {
+    //if we click outside the modal window, it will close
     const clickOutside = (event: MouseEvent) => {
       let path = event.composedPath().includes(refModal.current as Node);
       let path2 = event.composedPath().includes(refSpider.current as Node);
       if (!path && !path2) {
-        if(isModalOpen) soundOfModal.play()
+        if (isModalOpen) soundOfModal.play();
         setIsModalOpen(false);
         setGameMode(isGameClassic ? "classic" : "ownRules");
       }
@@ -44,36 +45,35 @@ const ModalWindow = () => {
     if (gameMode === "ownRules") {
       if (applesQuantity && applesPick) {
         if (2 * applesQuantity + 1 > applesPick && applesQuantity <= 15) {
+          //saves if the game mode is ownRules and all inputs are filled
           setIsWarning(false);
           dispatch(setOwnResidue(2 * applesQuantity + 1));
-          dispatch(setResidue(2 * applesQuantity + 1))
+          dispatch(setResidue(2 * applesQuantity + 1));
           dispatch(setApplesPickOwnGame(applesPick));
-          dispatch(setIsGameClasssic(false))
-          setGameMode('ownRules')
-          setIsModalOpen(false)
-          soundOfModal.play()
+          dispatch(setIsGameClasssic(false));
+          setGameMode("ownRules");
+          setIsModalOpen(false);
+          soundOfModal.play();
+        } else {
+          //if it is an invalid condition
+          setIsWarning(true);
+          dispatch(setIsGameClasssic(true));
+          setGameMode("classic");
         }
-        else {
-            setIsWarning(true)
-            dispatch(setIsGameClasssic(true))
-            setGameMode('classic')
-        }
+      } else {
+        //if not all inputs are filled
+        setIsWarning(true);
+        dispatch(setIsGameClasssic(true));
+        setGameMode("classic");
       }
-      else {
-        setIsWarning(true)
-        dispatch(setIsGameClasssic(true))
-        setGameMode('classic')
+    } else {
+      soundOfModal.play();
+      dispatch(setResidue(25));
+      dispatch(setIsGameClasssic(true));
+      dispatch(setApplesPickOwnGame(3));
+      setIsModalOpen(false);
+      setIsWarning(false);
     }
-    }
-    else {
-        soundOfModal.play()
-        dispatch(setResidue(25))
-        dispatch(setIsGameClasssic(true))
-        dispatch(setApplesPickOwnGame(3))
-        setIsModalOpen(false)
-        setIsWarning(false);
-    }
-
   };
 
   return (
@@ -113,14 +113,17 @@ const ModalWindow = () => {
           />
           <label htmlFor="chose">Own rules</label>
 
-          <input min={1}
+          <input
+            min={1}
+            max={14}
             onChange={(e) => setAppleQuantity(+e.target.value)}
             className="inputNumber"
             type="number"
             name="n"
           />
           <label htmlFor="n">Apples (2*n + 1)</label>
-          <input min={1}
+          <input
+            min={1}
             onChange={(e) => setApplePick(+e.target.value)}
             className="inputNumber"
             type="number"
@@ -130,7 +133,7 @@ const ModalWindow = () => {
           {isWarning && (
             <div style={{ color: "red" }}>
               Fill in all fields, the number of apples should be more than the
-              maximum pick. (Max quantity of Apples is 15)
+              maximum pick. (Max quantity of Apples is 14)
             </div>
           )}
         </div>

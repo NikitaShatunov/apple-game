@@ -1,3 +1,14 @@
+html,
+body {
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
 .table__wrapper {
   -moz-user-select: none;
   -khtml-user-select: none;
@@ -363,9 +374,10 @@
 
 
 @media screen and (max-width: 800px) {
-  html {
-    max-height: 800px;
-  }
+ body {
+  max-width: 100%;
+  max-height: 100%;
+ }
   .playerArea, .opponentArea {
     width: 100px;
     img {
